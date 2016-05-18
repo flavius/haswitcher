@@ -53,7 +53,7 @@ func handlerPing(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerSwitch(w http.ResponseWriter, r *http.Request) {
-	cfg, _ := getConfiguration("config.json")
+	cfg, _ := getConfiguration(configfile)
 	active := getSwitchState(cfg)
 	fmt.Fprintf(w, "Active: %s\n", active)
 	newActive := getAlternativeIp(cfg, active)
@@ -64,7 +64,7 @@ func handlerSwitch(w http.ResponseWriter, r *http.Request) {
 }
 
 func handlerState(w http.ResponseWriter, r *http.Request) {
-	cfg, _ := getConfiguration("config.json")
+	cfg, _ := getConfiguration(configfile)
 	active := getSwitchState(cfg)
 	fmt.Fprintf(w, "Active: %s", active)
 }
@@ -189,9 +189,7 @@ func compileCommandLineArgs(args []string, values CommandLineArgs) []string {
 
 func main() {
 	cfg, err := getConfiguration(configfile)
-	if err == nil {
-		fmt.Println(cfg)
-	} else {
+	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
